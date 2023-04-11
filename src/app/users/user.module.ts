@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserListComponent } from './user-list/user-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { UserService } from './user.service';
 import { UserInsertComponent } from './user-insert/user-insert.component';
@@ -14,7 +15,12 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [UserListComponent, UserInsertComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), HttpClientModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    HttpClientModule,
+    ReactiveFormsModule,
+  ],
   providers: [UserService],
 })
 export class UsersModule {}
