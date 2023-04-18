@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from '../user.interfaces';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-insert',
@@ -9,7 +11,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class UserInsertComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private service: UserService) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -33,5 +35,27 @@ export class UserInsertComponent {
 
   get phoneControls() {
     return (this.form.get('phone') as FormArray).controls;
+  }
+
+  addPhone(): void {
+    const phones = this.form.get('phone') as FormArray;
+    phones.push(this.initPhone());
+  }
+
+  removePhone(index: number): void {
+    const phones = this.form.get('phone') as FormArray;
+    phones.removeAt(index);
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      console.log(this.form.value);
+      const user = this.form.value as User;
+      this.service.insertUser(user).subscribe((response) => {
+        console.log(response);
+      });
+    } else {
+      console.log('Form is not valid');
+    }
   }
 }
