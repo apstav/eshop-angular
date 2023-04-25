@@ -22,7 +22,7 @@ const routes: Routes = [
       import('./product/product.module').then((m) => m.ProductModule),
   },
   {
-    path: 'public',
+    path: '',
     loadChildren: () =>
       import('./public/public.module').then((m) => m.PublicModule),
   },

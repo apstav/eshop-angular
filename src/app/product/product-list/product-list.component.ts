@@ -3,6 +3,7 @@ import { ProductService } from '../product.service';
 import { Product, ProductAPIList } from '../product.interfaces';
 import { Subscription } from 'rxjs';
 import { orderBy } from 'lodash-es';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-product-list',
@@ -10,7 +11,10 @@ import { orderBy } from 'lodash-es';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private appService: AppService
+  ) {}
 
   loading = false;
   productList: Product[] = [];
@@ -20,7 +24,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('Starting find all API call');
-    this.loading = true;
+    //this.loading = true;
+    this.appService.setIsLoading(true);
     this.productService.findAll().subscribe({
       next: (apiData: ProductAPIList) => {
         const { status, data } = apiData;
@@ -28,11 +33,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
         console.log(status, data);
       },
       error: (error) => {
-        this.loading = false;
+        //this.loading = false;
+        this.appService.setIsLoading(false);
         console.log(error);
       },
       complete: () => {
-        this.loading = false;
+        //this.loading = false;
+        this.appService.setIsLoading(false);
         console.log('API call completed!');
       },
     });
